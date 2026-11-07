@@ -1,0 +1,30 @@
+# Pinned to a specific commit of an UNMERGED py-cord PR
+# (Pycord-Development/pycord#3159), not a release - stable py-cord (and
+# discord.py) can't receive voice audio on DAVE-encrypted channels at all
+# (confirmed broken live on this project's own server). This commit is
+# what multiple independent third parties validated their own
+# recording/STT bots against (see bot/README.md's Voice Input section for
+# the full story and the risk this pin carries: no upstream support if it
+# breaks, and the source PR is comment-locked with no maintainer ETA).
+# Installs as `import discord`, same as discord.py - the two packages
+# can't coexist in one environment (both claim the `discord` name), so
+# this REPLACES discord.py entirely, it doesn't add to it.
+py-cord[voice] @ git+https://github.com/Pycord-Development/pycord.git@05cf65f
+anthropic>=0.40.0
+python-dotenv>=1.0.0
+Pillow>=10.0.0
+requests>=2.31.0
+
+# webrtcvad (voice-input utterance detection) needs a C compiler to build
+# from source - use the prebuilt-wheel variant instead, same `import
+# webrtcvad`, no compiler required.
+webrtcvad-wheels
+
+# Voice: KokoroDirectTTS (speech output) and WyomingWhisperSTT (voice
+# input) from voxport, published on PyPI. [all] = the kokoro + wyoming
+# extras. 0.5.0+ reports Kokoro progress through logging (main.py turns
+# it on).
+voxport[all]>=0.5.0,<0.6
+
+# main.py writes WAV audio itself; voxport stopped depending on it in 0.4.0.
+soundfile

@@ -1,0 +1,3 @@
+# Tool plugins for this extension, one module name per line (modules live
+# in bot/plugins/). Leave empty if the game has none. For example:
+# enshrouded_lookup

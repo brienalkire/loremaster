@@ -1,0 +1,5 @@
+# For running the tests: python -m pip install -r requirements-dev.txt
+# (the bot's own requirements, from bot/requirements.txt, also need to be
+# installed in the same environment).
+pytest
+pyflakes

@@ -1,0 +1,28 @@
+# Secrets - never commit
+.env
+
+# Your group's own data. It lives in the home folder (LOREMASTER_HOME, by
+# default this checkout), and none of it belongs in the code repository.
+# Back it up somewhere private: see MANUAL.md, "Backups".
+/instructions/
+loremaster.db
+loremaster_backup.sql
+loremaster.log
+loremaster.prev.log
+.loremaster.pid
+/WISHLIST.md
+/BUGS.md
+
+# Made by CI
+ci-requirements.txt
+
+# Dependencies and caches
+__pycache__/
+*.pyc
+.venv/
+venv/
+.pytest_cache/
+
+# OS/editor cruft
+.DS_Store
+.vscode/
