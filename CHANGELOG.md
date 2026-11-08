@@ -6,21 +6,6 @@ This project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
-### Added
-- The owner can send a wish or bug to the developer: "send bug 4
-  upstream" replies with a link to a pre-filled GitHub issue
-  (`send_feedback_upstream`). It leaves out who reported or backed the
-  item, and nothing is sent until the owner submits it.
-- GitHub issue forms for bug reports and feature ideas.
-
-### Changed
-- "Warmaster" is now a default wake-word alias for "loremaster", because
-  Whisper often hears it that way. Setting `LOREMASTER_WAKE_WORD_ALIASES`
-  replaces the default, and a custom wake word gets no default alias.
-- The manual suggests naming the bot "Loremaster", explains that the wake
-  word doesn't follow the bot's Discord name, and gives advice on picking
-  a custom wake word.
-
 ## [0.6.0] - 2026-11-07
 
 First public release. Each group runs its own copy, with its own Discord
@@ -57,13 +42,22 @@ aren't included.
   group.
 - The desktop control panel has an "About" menu that shows the bot's
   version and author.
+- The owner can send a wish or bug to the developer: "send bug 4
+  upstream" replies with a link to a pre-filled GitHub issue
+  (`send_feedback_upstream`). It leaves out who reported or backed the
+  item, and nothing is sent until the owner submits it.
+- GitHub issue forms for bug reports and feature ideas.
 
 ### Changed
 - **Voice input is now off by default.** Set `LOREMASTER_VOICE_INPUT=true`
   in `.env` to keep it.
 - **`GAME_EXTENSION` now defaults to blank** instead of `enshrouded`.
-- If you used the `warmaster` wake-word alias, set
-  `LOREMASTER_WAKE_WORD_ALIASES=warmaster`.
+- "Warmaster" is a default wake-word alias for "loremaster", because
+  Whisper often hears it that way. Setting `LOREMASTER_WAKE_WORD_ALIASES`
+  replaces the default, and a custom wake word gets no default alias.
+- The manual suggests naming the bot "Loremaster", explains that the wake
+  word doesn't follow the bot's Discord name, and gives advice on picking
+  a custom wake word.
 - `enshrouded_lookup` is now a plugin. To keep its tools, an Enshrouded
   extension needs `enshrouded_lookup` in its `plugins.txt`.
 - The persona file can be named `persona.md`.
