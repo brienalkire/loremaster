@@ -65,6 +65,11 @@ Then:
 5. Invite the bot to your server ([MANUAL.md](MANUAL.md#4-invite-the-bot-to-your-server))
    and say `@YourBot hello`.
 
+The control panel starts and stops the bot, backs up its database, and
+shows the latest lines of its log:
+
+![The Loremaster control panel](docs/images/control-panel.png)
+
 It starts with a generic example persona. Write your own next:
 [MANUAL.md](MANUAL.md#persona-and-game-extensions) explains how.
 
