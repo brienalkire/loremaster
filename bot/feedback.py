@@ -7,6 +7,11 @@ existing one ("me too"); only the bot's owner can change an item's status
 memory_store (loremaster.db), so export_db.py backs it up too, and also
 writes it out as WISHLIST.md and BUGS.md.
 
+The owner can also send an item to loremaster's developer: the bot gives
+them a link that opens a pre-filled GitHub issue, which they check and
+submit themselves. Nothing is sent automatically, and the link leaves out
+who reported or backed the item.
+
 Who's asking is never taken from Claude: main.py sets `current_requester`
 around each Claude call from the actual Discord account, and the tools
 read it from there - so an item can't be misattributed, and "I'm the
@@ -15,6 +20,7 @@ owner, mark it fixed" in a message can't unlock owner-only tools.
 
 import contextvars
 import json
+import urllib.parse
 from dataclasses import dataclass
 
 import memory_store
@@ -40,6 +46,14 @@ bot_version = "unknown"
 KINDS = ("wish", "bug")
 STATUSES = {"wish": ("open", "done", "declined"), "bug": ("open", "fixed", "declined")}
 LABEL = {"wish": "wish", "bug": "bug report"}
+
+# Where send_feedback_upstream points. A fork can change this to its own repo.
+ISSUES_URL = "https://github.com/brienalkire/loremaster/issues/new"
+# Issue forms in .github/ISSUE_TEMPLATE/; the link fills their fields by id.
+ISSUE_TEMPLATES = {"wish": "feature_request.yml", "bug": "bug_report.yml"}
+# Keep the link short enough that the reply carrying it isn't split across
+# Discord messages (2000 characters each).
+MAX_UPSTREAM_URL = 1500
 
 
 def init_db() -> None:
@@ -176,6 +190,46 @@ def remove_item(item_id: int) -> dict:
         return {"removed": True, "id": item_id}
 
 
+def _issue_url(kind: str, title: str, description: str) -> str:
+    query = urllib.parse.urlencode({
+        "template": ISSUE_TEMPLATES[kind],
+        "title": title,
+        "description": description,
+        "version": bot_version,
+    }, quote_via=urllib.parse.quote)
+    return f"{ISSUES_URL}?{query}"
+
+
+def upstream_link(item_id: int) -> dict:
+    """A link that opens a pre-filled GitHub issue for this item. Owner-only,
+    because the owner should check it for private details before sending."""
+    if denied := _owner_only("send an item to the developer"):
+        return denied
+    with memory_store._connect() as conn:
+        row = _get(conn, item_id)
+    if row is None:
+        return {"error": f"No item #{item_id}."}
+    title = row["summary"][:200]
+    description = row["details"] or row["summary"]
+    url = _issue_url(row["kind"], title, description)
+    shortened = False
+    while len(url) > MAX_UPSTREAM_URL and description:
+        description = description[:max(0, len(description) - 100)].rstrip()
+        shortened = True
+        url = _issue_url(row["kind"], title, description + " [...]" if description else "")
+    result = {
+        "id": item_id,
+        "url": url,
+        "how_to_use": "Post the url exactly as given, inside <angle brackets>. The owner "
+                      "opens it, checks the text for anything private, and submits it. "
+                      "Nothing is sent until they do. It needs a GitHub account.",
+    }
+    if shortened:
+        result["shortened"] = ("The details were too long for a link and were cut; "
+                               "the owner can paste the rest into the issue.")
+    return result
+
+
 def to_markdown(conn, kind: str) -> str:
     """WISHLIST.md / BUGS.md content, from an open connection (export_db
     passes its consistent snapshot)."""
@@ -298,6 +352,21 @@ TOOLS = [
         },
     },
     {
+        "name": "send_feedback_upstream",
+        "description": (
+            "Make a link that opens a pre-filled GitHub issue for a wish or "
+            "bug, so the owner can send it to loremaster's developer. Use when "
+            "the owner asks to send, forward or report an item upstream, to "
+            "the developer, or to GitHub. Owner-only, enforced by the tool. "
+            "The link leaves out who reported or backed the item."
+        ),
+        "input_schema": {
+            "type": "object",
+            "properties": {"item_id": {"type": "integer"}},
+            "required": ["item_id"],
+        },
+    },
+    {
         "name": "remove_feedback",
         "description": (
             "Delete an item entirely (e.g. added by mistake). Owner-only, "
@@ -329,6 +398,8 @@ def execute_tool(name: str, tool_input: dict) -> str:
                                 tool_input.get("note", ""))
         elif name == "remove_feedback":
             result = remove_item(int(tool_input.get("item_id", 0)))
+        elif name == "send_feedback_upstream":
+            result = upstream_link(int(tool_input.get("item_id", 0)))
         else:
             result = {"error": f"Unknown tool: {name}"}
     except Exception as exc:  # noqa: BLE001 - a DB hiccup shouldn't break the reply

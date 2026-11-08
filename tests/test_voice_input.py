@@ -49,3 +49,16 @@ def test_whisper_audio_is_downsampled_to_16k():
     one_second_48k = np.zeros(48000, dtype=np.int16).tobytes()
     audio = voice_input.mono_pcm_to_whisper_audio(one_second_48k)
     assert len(audio) == 16000
+
+
+def test_default_wake_word_gets_warmaster_alias():
+    assert voice_input.wake_word_aliases("loremaster", ()) == ("warmaster",)
+    assert voice_input.wake_word_aliases("Loremaster", ()) == ("warmaster",)
+
+
+def test_custom_wake_word_gets_no_default_alias():
+    assert voice_input.wake_word_aliases("gandalf", ()) == ()
+
+
+def test_configured_aliases_replace_the_default():
+    assert voice_input.wake_word_aliases("loremaster", ("lord master",)) == ("lord master",)

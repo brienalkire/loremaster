@@ -1,0 +1,39 @@
+name: Bug report
+description: Something loremaster did wrong.
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting this. Before you submit, remove anything private:
+        names, campaign details, or what people said in your server.
+  - type: textarea
+    id: description
+    attributes:
+      label: What happened
+      description: What you asked or did, what went wrong, and what you expected.
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Loremaster version
+      description: In the control panel's About box, or ask the bot what version it is.
+  - type: dropdown
+    id: area
+    attributes:
+      label: Where
+      options:
+        - Text replies
+        - Spoken replies (voice output)
+        - Voice input (wake word)
+        - Campaign memory
+        - Control panel
+        - Setup or install
+        - Something else
+  - type: textarea
+    id: log
+    attributes:
+      label: Log lines
+      description: Relevant lines from loremaster.log, if any. Check them for private details first.
+      render: text

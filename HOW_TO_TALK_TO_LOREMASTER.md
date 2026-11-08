@@ -82,6 +82,9 @@ list.
 If someone already asked for the same thing, it adds your support instead
 of a duplicate.
 
+The list goes to whoever runs your group's bot, not straight to the
+person who wrote Loremaster. They can pass items on to the developer.
+
 ## About the personality
 
 The example persona is a little snooty on purpose: a self-satisfied sage

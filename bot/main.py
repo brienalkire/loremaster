@@ -211,9 +211,10 @@ WAKE_WORD = paths.env_str("LOREMASTER_WAKE_WORD", "loremaster").lower()
 
 # Extra spellings that also count as the wake word (comma-separated
 # LOREMASTER_WAKE_WORD_ALIASES). For words Whisper consistently mishears
-# just below the fuzzy-match threshold - for example, a name in the group
-# that sounds like the wake word.
-WAKE_WORD_ALIASES = paths.env_list("LOREMASTER_WAKE_WORD_ALIASES")
+# just below the fuzzy-match threshold. If blank, the default wake word
+# gets "warmaster" (see voice_input.DEFAULT_WAKE_WORD_ALIASES).
+WAKE_WORD_ALIASES = voice_input.wake_word_aliases(
+    WAKE_WORD, paths.env_list("LOREMASTER_WAKE_WORD_ALIASES"))
 
 # Real-time voice input (STT). Its long-chased multi-minute "packet stalls"
 # turned out to be voice_client.stop() silently stopping voice receive

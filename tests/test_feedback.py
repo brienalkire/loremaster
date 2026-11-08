@@ -108,3 +108,67 @@ def test_execute_tool_dispatches_and_returns_json(db, requester):
     for tool in fb.TOOLS:
         result = json.loads(fb.execute_tool(tool["name"], {}))
         assert "Unknown tool" not in result.get("error", ""), tool["name"]
+
+
+def _query(url):
+    import urllib.parse
+    base, _, query = url.partition("?")
+    return base, dict(urllib.parse.parse_qsl(query))
+
+
+def test_upstream_link_is_owner_only(db, requester):
+    requester(user_id=1, name="Alice")
+    item = fb.add_item("bug", "answered twice")
+    assert "error" in fb.upstream_link(item["id"])
+
+
+def test_upstream_link_fills_the_issue_form(db, requester, monkeypatch):
+    monkeypatch.setattr(fb, "bot_version", "9.9.9")
+    requester(user_id=1, name="Alice")
+    bug = fb.add_item("bug", "answered twice", "asked once & got two replies")
+    requester(user_id=2, name="Bob")
+    fb.support_item(bug["id"])
+    requester(user_id=3, name="Owner", is_owner=True)
+    result = fb.upstream_link(bug["id"])
+    base, params = _query(result["url"])
+    assert base == fb.ISSUES_URL
+    assert params == {"template": "bug_report.yml", "title": "answered twice",
+                      "description": "asked once & got two replies", "version": "9.9.9"}
+    assert "Alice" not in result["url"] and "Bob" not in result["url"]
+    assert "shortened" not in result
+
+
+def test_upstream_link_for_a_wish_uses_the_summary(db, requester):
+    requester(is_owner=True)
+    wish = fb.add_item("wish", "track loot")
+    _, params = _query(fb.upstream_link(wish["id"])["url"])
+    assert params["template"] == "feature_request.yml"
+    assert params["description"] == "track loot"
+
+
+def test_upstream_link_stays_short(db, requester):
+    requester(is_owner=True)
+    bug = fb.add_item("bug", "long one", "détails " * 400)
+    result = fb.upstream_link(bug["id"])
+    assert len(result["url"]) <= fb.MAX_UPSTREAM_URL
+    assert result["shortened"]
+    assert _query(result["url"])[1]["description"].endswith("[...]")
+
+
+def test_upstream_link_unknown_item(db, requester):
+    requester(is_owner=True)
+    assert "error" in fb.upstream_link(99)
+
+
+def test_upstream_tool_dispatch(db, requester):
+    requester(is_owner=True)
+    wish = fb.add_item("wish", "dark mode")
+    assert "url" in json.loads(fb.execute_tool("send_feedback_upstream", {"item_id": wish["id"]}))
+
+
+def test_issue_templates_exist_with_the_linked_fields():
+    import pathlib
+    folder = pathlib.Path(__file__).resolve().parent.parent / ".github" / "ISSUE_TEMPLATE"
+    for template in fb.ISSUE_TEMPLATES.values():
+        text = (folder / template).read_text(encoding="utf-8")
+        assert "id: description" in text and "id: version" in text

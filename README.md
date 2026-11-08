@@ -26,6 +26,8 @@ shared instance for you.
 - Looks up live Steam data (price, co-op support, player counts) and
   searches the web for recent patch notes and news.
 - Keeps a wish list and bug reports from the group, about the bot itself.
+  The owner can pass any item on to the developer as a pre-filled GitHub
+  issue.
 - **Voice output:** speaks its replies in a voice channel ("speak on").
 - **Voice input (experimental, off by default):** listens in a voice
   channel and answers when someone says its wake word. This needs a

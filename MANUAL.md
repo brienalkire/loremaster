@@ -35,7 +35,10 @@ a short overview, see [README.md](README.md).
 
 1. Open the [Discord Developer Portal](https://discord.com/developers/applications)
    and click **New Application**. The name you choose is the bot's name in
-   your server.
+   your server, and what people type after `@`. "Loremaster" is a good
+   choice. The voice wake word doesn't follow this name: it stays
+   "loremaster" unless you change `LOREMASTER_WAKE_WORD` (see
+   [Voice input](#voice-input-experimental)).
 2. Open **Bot** in the sidebar.
    - Click **Reset Token**, then copy the token. This is your
      `DISCORD_BOT_TOKEN`. Treat it like a password: anyone with it can
@@ -161,7 +164,7 @@ setx LOREMASTER_HOME "%USERPROFILE%\Documents\loremaster"
 | `LOREMASTER_VOICE_INPUT` | `false` | Turn on voice input (experimental) |
 | `WHISPER_HOST`, `WHISPER_PORT` | `localhost`, `10300` | Speech-to-text server for voice input |
 | `LOREMASTER_WAKE_WORD` | `loremaster` | Word that wakes the bot in voice |
-| `LOREMASTER_WAKE_WORD_ALIASES` | blank | Extra spellings of the wake word, comma-separated |
+| `LOREMASTER_WAKE_WORD_ALIASES` | `warmaster` for the default wake word, none otherwise | Extra spellings of the wake word, comma-separated. Setting it replaces the default. |
 
 Restart the bot after changing `.env`. Real environment variables take
 priority over `.env` values.
@@ -253,12 +256,41 @@ guide you can share with your group. In brief:
 - **Campaigns:** "start a campaign", "switch to our Rogue Trader
   campaign", "remember that we beat the dragon".
 - **Feedback:** "I wish you could...", "that's a bug". "What's on the
-  wish list?" lists open items.
+  wish list?" lists open items. See
+  [Wish list and bug reports](#wish-list-and-bug-reports).
 - **Voice:** "speak on/off", "listen on/off", "voice on/off" (see
   [Voice](#voice)).
 
 Conversation history is kept per channel, in memory only, and is lost when
 the bot restarts. Campaign memory is saved to the database.
+
+### Wish list and bug reports
+
+Anyone in your server can tell the bot what they wish it could do, or
+what it got wrong. Those items stay in your copy: in `loremaster.db`, and
+in `WISHLIST.md` and `BUGS.md` after a backup. You're the owner (whoever
+created the Discord application), so only you can mark items done, fixed
+or declined, or remove them:
+
+```
+@Loremaster mark bug 4 fixed
+@Loremaster decline wish 2, we don't need it
+```
+
+**Sending feedback to the developer.** Nothing goes to Loremaster's
+developer automatically. To pass an item on, ask:
+
+```
+@Loremaster send bug 4 upstream
+```
+
+The bot replies with a link that opens a new
+[GitHub issue](https://github.com/brienalkire/loremaster/issues), already
+filled in with the item's summary, details, and the bot version. It
+leaves out who reported or backed it. Before you click **Submit**, read
+it and remove anything private, such as names or campaign details.
+You need a GitHub account. You can also open an issue yourself from the
+same page.
 
 ---
 
@@ -326,7 +358,14 @@ Tips:
 - Use headphones, or Discord's echo cancellation, so the bot doesn't hear
   its own replies.
 - If Whisper keeps hearing the wake word as something else, add that
-  spelling to `LOREMASTER_WAKE_WORD_ALIASES`.
+  spelling to `LOREMASTER_WAKE_WORD_ALIASES`. "Warmaster" is already
+  covered for the default wake word. If you set the list yourself,
+  include `warmaster` in it to keep that.
+- The wake word is "loremaster" even if your bot has another name in
+  Discord. It works well because it's long and isn't an everyday word.
+  If you change it, choose a distinctive word of three or more syllables.
+  A short or common word ("Gary", "bot") wakes the bot by accident during
+  normal conversation, and Whisper mishears short words more often.
 - You can pause after the wake word. The bot waits about 8 seconds for
   the rest of the question.
 
@@ -406,7 +445,8 @@ how it's handled.
 
 - `loremaster.db` keeps campaign notes, general memory, and wish-list and
   bug items. Feedback items record the author's Discord display name and
-  user ID.
+  user ID. They're sent to the developer only if you submit one as a
+  GitHub issue yourself.
 - `loremaster.log` keeps bot status messages and errors. It doesn't record
   messages or transcripts.
 - Conversation history is kept in memory only and is lost on restart.

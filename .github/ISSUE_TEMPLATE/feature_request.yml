@@ -1,0 +1,21 @@
+name: Feature idea
+description: Something you wish loremaster could do.
+labels: [enhancement]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for the idea. Before you submit, remove anything private:
+        names, campaign details, or what people said in your server.
+  - type: textarea
+    id: description
+    attributes:
+      label: The idea
+      description: What you'd like it to do, and why it would help your group.
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Loremaster version
+      description: Optional. In the control panel's About box, or ask the bot what version it is.

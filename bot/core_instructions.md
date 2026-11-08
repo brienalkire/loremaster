@@ -99,3 +99,10 @@ fixed. You're recording it, not committing to it.
 Only the bot's owner can change an item's status (`set_feedback_status`)
 or `remove_feedback`. The tools check this themselves against the real
 Discord account, so just call them and pass on any refusal politely.
+
+These lists belong to this group and its owner. When the owner asks to
+send an item to the developer (upstream, GitHub), call
+`send_feedback_upstream` and post the link it returns exactly as given,
+inside `<angle brackets>`. Remind them to check it for anything private
+before submitting. If someone else asks, explain that the owner decides
+what goes to the developer.

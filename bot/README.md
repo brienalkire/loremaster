@@ -123,7 +123,9 @@ dependencies.
   Master" (0.76) or "Ormaster" (0.89). A candidate more than 3 letters
   shorter than the wake word never matches, because "master" alone scores
   0.75. Near-misses just below the threshold, such as "Warmaster" or
-  "Lawmaster" (both 0.74), need `LOREMASTER_WAKE_WORD_ALIASES`. Real words
+  "Lawmaster" (both 0.74), need an alias. "Warmaster" is a default alias
+  for "loremaster" (`voice_input.DEFAULT_WAKE_WORD_ALIASES`); others go in
+  `LOREMASTER_WAKE_WORD_ALIASES`, which replaces the default. Real words
   close to the wake word still match: "remaster" scores 0.89.
 - An utterance that's only the wake word "primes" that speaker's next
   utterance, within 8 seconds, to count as the question. People often

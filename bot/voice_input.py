@@ -99,6 +99,17 @@ WAKE_WORD_FUZZY_THRESHOLD = 0.75
 # "Dungeon Master" or "the master bedroom" woke the bot.
 WAKE_WORD_MAX_SHORTFALL = 3
 
+# Aliases used when LOREMASTER_WAKE_WORD_ALIASES is blank, keyed by wake
+# word. Whisper often hears "loremaster" as "Warmaster", which scores 0.74,
+# just under the threshold. A custom wake word gets no default aliases.
+DEFAULT_WAKE_WORD_ALIASES = {"loremaster": ("warmaster",)}
+
+
+def wake_word_aliases(wake_word: str, configured: tuple[str, ...]) -> tuple[str, ...]:
+    """The configured aliases, or the defaults for this wake word if none
+    are configured."""
+    return configured or DEFAULT_WAKE_WORD_ALIASES.get(wake_word.lower(), ())
+
 
 def extract_wake_word_query(transcript: str, wake_word: str) -> str | None:
     """Find `wake_word` in `transcript` and return whatever follows it, or
