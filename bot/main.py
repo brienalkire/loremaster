@@ -8,7 +8,7 @@ still in-memory only (lost on restart) — durable campaign state lives in
 memory_store's SQLite database instead.
 """
 
-__version__ = "0.6.0"  # keep in sync with CHANGELOG.md and the git tag
+__version__ = "0.6.1"  # keep in sync with CHANGELOG.md and the git tag
 
 import asyncio
 import base64

@@ -6,6 +6,8 @@ This project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [0.6.1] - 2026-11-09
+
 ### Added
 - Dice rolls: "roll 1d20", "roll 3d6", "roll 2d6+3", or "roll 1d20 each
   for Alice, Bob and Cara" (`roll_dice`, `bot/dice.py`). The numbers come
