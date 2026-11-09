@@ -253,6 +253,9 @@ guide you can share with your group. In brief:
   comes back as a `.md` attachment.
 - **Share images or files:** attach a screenshot, or a `.md` or `.txt`
   file (up to 50,000 characters).
+- **Dice:** "roll 1d20", "roll 3d6", "roll 2d6+3", "roll 1d20 each for
+  Alice, Bob and Cara". The numbers come from a real random number
+  generator, not from the model.
 - **Campaigns:** "start a campaign", "switch to our Rogue Trader
   campaign", "remember that we beat the dragon".
 - **Feedback:** "I wish you could...", "that's a bug". "What's on the

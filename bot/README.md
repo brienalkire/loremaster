@@ -31,6 +31,7 @@ Windows, installing only what the tests import.
 | `memory_store.py` | SQLite campaign memory (campaigns, current state, event log, general memory), exposed as Claude tools. |
 | `feedback.py` | Wish list and bug reports in the same database. The owner check uses the real Discord account and doesn't trust Claude. |
 | `steam_lookup.py` | Live Steam storefront data. No API key needed. |
+| `dice.py` | Dice rolls in NdK notation from `secrets.SystemRandom`, so results never come from the model. |
 | `plugins/` | Optional per-game tools, turned on by an extension's `plugins.txt`. `enshrouded_lookup.py` is the example. |
 | `voice_input.py` | `WakeWordSink`: per-speaker buffering, VAD segmentation, wake-word matching. |
 | `export_db.py` | Database to SQL backup and back again, plus the WISHLIST/BUGS exports. |

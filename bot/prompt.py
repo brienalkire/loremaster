@@ -9,6 +9,7 @@ import importlib
 import json
 import re
 
+import dice
 import feedback
 import memory_store
 import paths
@@ -77,7 +78,7 @@ def build_system_prompt(version: str) -> str:
     return "\n\n---\n\n".join(parts)
 
 
-CORE_TOOL_MODULES = [steam_lookup, memory_store, feedback]
+CORE_TOOL_MODULES = [steam_lookup, memory_store, feedback, dice]
 _plugin_cache: dict[str, object] = {}
 
 

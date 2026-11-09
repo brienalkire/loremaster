@@ -68,6 +68,20 @@ say in that voice channel is transcribed so the bot can hear its name.
 If the bot can't join, it says why. That's usually a missing permission on
 that voice channel, which a server admin can fix.
 
+## Rolling dice
+
+Ask it to roll, using the usual dice notation: the number of dice, a
+"d", then the number of sides.
+
+```
+@Loremaster roll 1d20
+@Loremaster roll 3d6
+@Loremaster roll 1d20 each for Alice, Bob and Cara
+```
+
+The rolls are really random: they come from code, not from the bot making
+numbers up. When several people roll, it tells you who rolled highest.
+
 ## Wishes and bugs
 
 Tell the bot what you'd like it to do, or what it got wrong. It keeps a

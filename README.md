@@ -23,6 +23,8 @@ shared instance for you.
 - Reads image attachments (character sheets, inventory screens) and `.md`
   or `.txt` files.
 - Can reply with a downloadable Markdown file instead of a chat message.
+- Rolls dice ("roll 3d6", "1d20 each for Alice and Bob") with a real
+  random number generator, not the model's guess.
 - Looks up live Steam data (price, co-op support, player counts) and
   searches the web for recent patch notes and news.
 - Keeps a wish list and bug reports from the group, about the bot itself.

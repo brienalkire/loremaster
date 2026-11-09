@@ -2,12 +2,13 @@ import json
 import sys
 import types
 
+import dice
 import feedback
 import memory_store as ms
 import prompt
 import steam_lookup
 
-CORE = [steam_lookup, ms, feedback]
+CORE = [steam_lookup, ms, feedback, dice]
 
 
 def test_no_campaign_uses_core_tools_and_persona(db, instructions):

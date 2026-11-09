@@ -6,6 +6,12 @@ This project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+### Added
+- Dice rolls: "roll 1d20", "roll 3d6", "roll 2d6+3", or "roll 1d20 each
+  for Alice, Bob and Cara" (`roll_dice`, `bot/dice.py`). The numbers come
+  from the operating system's random source, never from the model. For
+  several people, the bot says who rolled highest, including ties.
+
 ## [0.6.0] - 2026-11-07
 
 First public release. Each group runs its own copy, with its own Discord
