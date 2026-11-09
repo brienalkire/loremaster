@@ -6,7 +6,7 @@ This project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
-## [0.6.1] - 2026-11-09
+## [0.7.0] - 2026-11-09
 
 ### Added
 - Dice rolls: "roll 1d20", "roll 3d6", "roll 2d6+3", or "roll 1d20 each
