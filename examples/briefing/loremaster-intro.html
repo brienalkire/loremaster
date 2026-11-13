@@ -1,0 +1,277 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Loremaster: an example briefing</title>
+<style>
+  @page { size: 13.333in 7.5in; margin: 0; }
+  :root {
+    --bg: #faf7f0;
+    --ink: #1f1a33;
+    --muted: #4a4560;
+    --soft: #6b6680;
+    --night: #1d1530;
+    --teal: #138a8a;
+    --teal-tint: #ecf5f3;
+    --gold: #d4a24a;
+    --line: #d9d3c4;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: var(--bg); }
+  body { font-family: "Segoe UI", Arial, sans-serif; color: var(--ink); }
+  .slide {
+    width: 13.333in; height: 7.5in; position: relative; overflow: hidden;
+    background: var(--bg); padding: 0.62in 0.8in 0.6in;
+    page-break-after: always; break-after: page;
+  }
+  .slide:last-child { page-break-after: auto; break-after: auto; }
+  .slide::before {
+    content: ""; position: absolute; left: 0; right: 0; top: 0; height: 0.12in;
+    background: var(--night); border-bottom: 0.03in solid var(--gold);
+  }
+  .eyebrow { color: var(--teal); font-weight: 700; letter-spacing: 0.18em; font-size: 17pt; text-transform: uppercase; margin-top: 0.08in; }
+  h1 { font-family: Georgia, "Times New Roman", serif; font-size: 34pt; margin: 0.06in 0 0.28in; line-height: 1.12; }
+  ul { margin: 0; padding-left: 0.32in; }
+  li { font-size: 21pt; line-height: 1.38; margin-bottom: 0.17in; }
+  b { font-weight: 700; }
+  code { font-family: Consolas, "Cascadia Mono", monospace; background: #ece6d8; border-radius: 4px; padding: 0 5px; font-size: 0.9em; }
+  .footer {
+    position: absolute; left: 0.8in; right: 0.8in; bottom: 0.3in;
+    font-size: 11.5pt; color: var(--soft); display: flex; justify-content: space-between;
+  }
+  .row { display: flex; gap: 0.3in; align-items: stretch; }
+  .box {
+    flex: 1; border: 2px solid var(--teal); background: var(--teal-tint);
+    border-radius: 12px; padding: 0.2in 0.22in; text-align: center;
+  }
+  .box h3 { margin: 0 0 0.06in; font-size: 21pt; }
+  .box p { margin: 0; font-size: 15.5pt; color: var(--muted); line-height: 1.35; }
+  .arrow { align-self: center; color: var(--teal); font-size: 30pt; font-weight: 700; }
+  .card { flex: 1; border: 1.5px solid var(--line); background: #fff; border-radius: 12px; padding: 0.2in 0.24in; }
+  .card h4 { margin: 0 0 0.08in; font-size: 18pt; color: var(--teal); }
+  .card p { margin: 0; font-size: 15.5pt; line-height: 1.4; color: var(--ink); }
+  .callout {
+    border-left: 0.08in solid var(--gold); background: #f3ecdc; padding: 0.16in 0.3in;
+    font-size: 19pt; border-radius: 0 8px 8px 0;
+  }
+  .code {
+    background: var(--night); color: #efeae0; border-radius: 12px;
+    font-family: Consolas, "Cascadia Mono", monospace; font-size: 15pt; line-height: 1.5;
+    padding: 0.24in 0.3in; white-space: pre; border-top: 0.05in solid var(--gold);
+  }
+  .two { display: flex; gap: 0.45in; align-items: flex-start; }
+  .two > .left { flex: 1.05; }
+  .two > .right { flex: 1; }
+  .two li { font-size: 19.5pt; }
+  .caption { font-style: italic; color: var(--soft); font-size: 13.5pt; margin-top: 0.1in; text-align: center; }
+
+  /* Cover */
+  .cover { background: radial-gradient(ellipse at 50% 30%, #2c2350 0%, #1d1530 55%, #120d20 100%); color: #f3efe6; text-align: center; padding-top: 0.45in; }
+  .cover::before { display: none; }
+  .cover { padding-top: 0.32in; }
+  .cover img { width: 1.75in; height: 1.75in; border-radius: 50%; }
+  .cover .eyebrow { color: #6fd6cf; margin-top: 0.05in; }
+  .cover .title { font-family: Georgia, serif; font-size: 66pt; font-weight: 700; margin: 0.02in 0 0; letter-spacing: 0.01em; }
+  .cover .sub { font-size: 24pt; color: #d8d2e6; margin-top: 0.06in; }
+  .cover .row { margin: 0.32in 0.2in 0; }
+  .cover .box { background: rgba(255,255,255,0.06); border-color: var(--gold); }
+  .cover .box h3 { color: #f3efe6; font-size: 19pt; }
+  .cover .box p { color: #cfc8de; font-size: 14.5pt; }
+  .cover .arrow { color: var(--gold); }
+  .cover .note { font-style: italic; color: #b9b2cc; font-size: 14pt; margin-top: 0.24in; }
+  .cover .footer { color: #9c95b2; justify-content: center; }
+
+  /* Chat mock */
+  .chat { display: flex; flex-direction: column; gap: 0.13in; }
+  .msg { max-width: 76%; border-radius: 12px; padding: 0.12in 0.22in; font-size: 16.5pt; line-height: 1.38; }
+  .msg .who { font-weight: 700; font-size: 13.5pt; display: block; margin-bottom: 0.02in; }
+  .user { align-self: flex-end; background: var(--teal); color: #fff; }
+  .user .who { color: #cdeeea; }
+  .bot { align-self: flex-start; background: #fff; border: 1.5px solid var(--line); }
+  .bot .who { color: #8a6418; }
+
+  .shot { width: 100%; border: 1.5px solid var(--line); border-radius: 8px; box-shadow: 0 3px 12px rgba(0,0,0,0.12); }
+  .big-code { font-size: 22pt; display: inline-block; }
+</style>
+</head>
+<body>
+
+<!-- 1 -->
+<section class="slide cover">
+  <img src="../../bot/assets/icon.png" alt="">
+  <div class="title" style="margin-top:0.12in">Loremaster</div>
+  <div class="sub">A game-night sage for your Discord group</div>
+  <div class="row">
+    <div class="box"><h3>@mention in Discord</h3><p>a question, a screenshot, a dice roll</p></div>
+    <div class="arrow">&rarr;</div>
+    <div class="box"><h3>Claude + your persona</h3><p>plus the game you're playing and campaign memory</p></div>
+    <div class="arrow">&rarr;</div>
+    <div class="box"><h3>An answer</h3><p>in the channel, as a file, or spoken aloud</p></div>
+  </div>
+  <div class="note">Narrated by Loremaster in his own voice (Kokoro, bm_george). Made with podcast-generator.</div>
+  <div class="footer"><span>Brien Alkire &middot; github.com/brienalkire/loremaster &middot; MIT license</span></div>
+</section>
+
+<!-- 2 -->
+<section class="slide">
+  <div class="eyebrow">Why</div>
+  <h1>Three things that eat game night</h1>
+  <ul>
+    <li><b>Choosing.</b> The first twenty minutes go on arguing about what to play.</li>
+    <li><b>Looking things up.</b> Mid-session, someone needs a build, a tactic or a rule, and nobody wants to alt-tab to a wiki.</li>
+    <li><b>Forgetting.</b> After a week away, nobody remembers where the campaign left off.</li>
+    <li>Loremaster <b>suggests games that fit your group</b>, <b>advises while you play</b>, and <b>remembers every campaign</b> between sessions.</li>
+  </ul>
+  <div class="footer"><span>Loremaster &middot; github.com/brienalkire/loremaster &middot; MIT license</span><span>2</span></div>
+</section>
+
+<!-- 3 -->
+<section class="slide">
+  <div class="eyebrow">How it works</div>
+  <h1>A mention goes in, an answer comes out</h1>
+  <div class="row">
+    <div class="box"><h3>1. Mention</h3><p>Someone @mentions the bot in any channel it can see. It never jumps in uninvited.</p></div>
+    <div class="arrow">&rarr;</div>
+    <div class="box"><h3>2. Think</h3><p>Claude reads the core rules, your persona, the game extension and campaign memory.</p></div>
+    <div class="arrow">&rarr;</div>
+    <div class="box"><h3>3. Answer</h3><p>A chat reply, a Markdown file to keep, or speech in your voice channel.</p></div>
+  </div>
+  <div style="height:0.38in"></div>
+  <div class="callout"><b>One host per group.</b> One person runs the bot for everyone, with their own Discord bot and Anthropic API key. The rest of the group just mentions it in Discord: nothing to install.</div>
+  <div class="footer"><span>Loremaster &middot; github.com/brienalkire/loremaster &middot; MIT license</span><span>3</span></div>
+</section>
+
+<!-- 4 -->
+<section class="slide">
+  <div class="eyebrow">In a session</div>
+  <h1>Ask in plain language</h1>
+  <div class="chat">
+    <div class="msg user"><span class="who">Alice</span>@Loremaster where did we leave off last time?</div>
+    <div class="msg bot"><span class="who">Loremaster</span>You'd just cleared the flooded crypt. Next: return the sigil to the abbess. Bob still carries the cursed amulet. Wisely, nobody has asked him to take it off.</div>
+    <div class="msg user"><span class="who">Bob</span>@Loremaster roll 1d20 each for Alice, Bob and Cara</div>
+    <div class="msg bot"><span class="who">Loremaster</span>Cara wins with 18. Alice 7, Bob 12, Cara 18.</div>
+  </div>
+  <div class="caption" style="text-align:left">Illustrative exchange. The names and the campaign are made up.</div>
+  <div class="footer"><span>Loremaster &middot; github.com/brienalkire/loremaster &middot; MIT license</span><span>4</span></div>
+</section>
+
+<!-- 5 -->
+<section class="slide">
+  <div class="eyebrow">Memory</div>
+  <h1>Campaigns that survive a restart</h1>
+  <ul>
+    <li>Each campaign is kept in a <b>local SQLite database</b>: the party, objectives, gear and memorable moments.</li>
+    <li>The bot <b>updates it as things happen</b>, and you can tell it things directly: <code>remember that Mira is now level 12</code>.</li>
+    <li><b>One active campaign at a time.</b> Switching changes the game extension straight away, with no restart.</li>
+    <li>A <b>game extension</b> is a folder of your own notes for one game. It can also turn on extra tools, such as an item lookup.</li>
+  </ul>
+  <div class="footer"><span>Loremaster &middot; github.com/brienalkire/loremaster &middot; MIT license</span><span>5</span></div>
+</section>
+
+<!-- 6 -->
+<section class="slide">
+  <div class="eyebrow">Tools</div>
+  <h1>More than a chat model</h1>
+  <div class="row" style="flex-wrap:wrap; gap:0.24in">
+    <div class="card" style="flex:1 1 30%"><h4>Real dice</h4><p>From the computer's random source, never the model's guess. Says who rolled highest.</p></div>
+    <div class="card" style="flex:1 1 30%"><h4>Live Steam data</h4><p>Price, sales, co-op support, and how many people still play.</p></div>
+    <div class="card" style="flex:1 1 30%"><h4>Web search</h4><p>Recent patch notes and news the model can't know.</p></div>
+    <div class="card" style="flex:1 1 30%"><h4>Screenshots and files</h4><p>Reads character sheets, inventory screens, and attached .md or .txt files.</p></div>
+    <div class="card" style="flex:1 1 30%"><h4>Replies as files</h4><p>Ask for a "file" and the answer comes back as a Markdown download.</p></div>
+    <div class="card" style="flex:1 1 30%"><h4>Wish list and bugs</h4><p>Kept per group. The owner can send any item on as a GitHub issue.</p></div>
+  </div>
+  <div class="footer"><span>Loremaster &middot; github.com/brienalkire/loremaster &middot; MIT license</span><span>6</span></div>
+</section>
+
+<!-- 7 -->
+<section class="slide">
+  <div class="eyebrow">Voice</div>
+  <h1>Spoken replies, and an ear (if you want one)</h1>
+  <div class="row" style="gap:0.35in">
+    <div class="card">
+      <h4>Speak: <code>speak on</code></h4>
+      <p>Joins your voice channel and reads its replies aloud. Speech runs <b>on your computer</b> with Kokoro: no cost per reply. A few seconds on a CPU; much faster with an NVIDIA GPU.</p>
+    </div>
+    <div class="card">
+      <h4>Listen: <code>listen on</code> (experimental)</h4>
+      <p>Off by default. Say its name and a question, and it answers. Needs a separate speech-to-text server. <b>It hears everyone in the channel</b>, so tell your group first.</p>
+    </div>
+  </div>
+  <div style="height:0.35in"></div>
+  <div class="callout">The voice narrating this video is the one Loremaster uses on game night.</div>
+  <div class="footer"><span>Loremaster &middot; github.com/brienalkire/loremaster &middot; MIT license</span><span>7</span></div>
+</section>
+
+<!-- 8 -->
+<section class="slide">
+  <div class="eyebrow">Persona</div>
+  <h1>You decide who it is</h1>
+  <div class="two">
+    <div class="left"><div class="code">## Persona &amp; interaction style
+
+Speak as "the Loremaster": a learned,
+slightly theatrical sage who has read
+every strategy guide worth reading and
+doesn't mind people knowing it. A little
+self-satisfied, with an occasional dry
+aside, but never mean.</div>
+    <div class="caption">From the example persona that ships with the bot</div></div>
+    <div class="right"><ul>
+      <li>A <b>persona file</b> your group writes: who's in the group, what you play, what to avoid, how it talks.</li>
+      <li>Change the personality entirely, or keep the sage.</li>
+      <li>It's <b>sent to Anthropic with every reply</b>: keep it focused, and private details out.</li>
+      <li><b>Only messages that mention the bot</b>, and its replies, go to Anthropic. The rest of your chat stays in Discord.</li>
+    </ul></div>
+  </div>
+  <div class="footer"><span>Loremaster &middot; github.com/brienalkire/loremaster &middot; MIT license</span><span>8</span></div>
+</section>
+
+<!-- 9 -->
+<section class="slide">
+  <div class="eyebrow">Running it</div>
+  <h1>A small control panel (Windows)</h1>
+  <div class="two">
+    <div class="left"><img class="shot" src="../../docs/images/control-panel.png" alt="The Loremaster control panel"><div class="caption">The Loremaster control panel</div></div>
+    <div class="right"><ul>
+      <li><b>Start</b> and <b>stop</b> the bot.</li>
+      <li><b>Back up</b> the database as readable SQL, and optionally commit and push it.</li>
+      <li>Keep backups in a <b>private</b> repository: they hold your group's campaign notes.</li>
+      <li><b>Open log</b> shows status messages and errors, never chat messages.</li>
+    </ul></div>
+  </div>
+  <div class="footer"><span>Loremaster &middot; github.com/brienalkire/loremaster &middot; MIT license</span><span>9</span></div>
+</section>
+
+<!-- 10 -->
+<section class="slide">
+  <div class="eyebrow">Before you install</div>
+  <h1>What the host needs</h1>
+  <ul style="margin-top:-0.05in">
+    <li style="font-size:19pt; margin-bottom:0.12in"><b>Python 3.12</b> (the tested version) and <b>Git</b>.</li>
+    <li style="font-size:19pt; margin-bottom:0.12in"><b>ffmpeg</b> on your PATH, only for spoken replies.</li>
+    <li style="font-size:19pt; margin-bottom:0.12in"><b>About 2 GB of disk</b> for the packages and the speech model.</li>
+    <li style="font-size:19pt; margin-bottom:0.12in"><b>A Discord account</b> allowed to add bots to your server.</li>
+    <li style="font-size:19pt; margin-bottom:0.12in"><b>An Anthropic account with API credit.</b> You pay per reply: watch Usage at first and set a monthly limit. Steam lookups and speech are free.</li>
+    <li style="font-size:19pt; margin-bottom:0.12in"><b>Tested on Windows 11.</b> The bot should run elsewhere; the control panel is Windows-only.</li>
+  </ul>
+  <div class="callout" style="margin-top:0.12in; font-size:18pt">Everyone else in the group needs only Discord.</div>
+  <div class="footer"><span>Loremaster &middot; github.com/brienalkire/loremaster &middot; MIT license</span><span>10</span></div>
+</section>
+
+<!-- 11 -->
+<section class="slide">
+  <div class="eyebrow">Get started</div>
+  <h1>Clone it and summon your own</h1>
+  <div class="code big-code">git clone https://github.com/brienalkire/loremaster.git</div>
+  <div style="height:0.28in"></div>
+  <ul>
+    <li><b>Install:</b> <code>pip install -r requirements.txt</code>, then put your Discord token and API key in <code>.env</code>.</li>
+    <li><b>Docs:</b> README for a quick start, MANUAL for everything else, and HOW_TO_TALK_TO_LOREMASTER for your group.</li>
+  </ul>
+  <div style="height:0.06in"></div>
+  <div class="callout">github.com/brienalkire/loremaster</div>
+  <div class="footer"><span>Loremaster &middot; github.com/brienalkire/loremaster &middot; MIT license</span><span>11</span></div>
+</section>
+
+</body>
+</html>

@@ -80,6 +80,9 @@ The first start takes a while, because it downloads the speech model
 
 ## Documentation
 
+- [Video introduction](https://github.com/brienalkire/loremaster/releases/download/v0.7.0/loremaster-intro.mp4):
+  six minutes, narrated by Loremaster in his own voice. Its slides and
+  script are in [examples/briefing/](examples/briefing/README.md).
 - [MANUAL.md](MANUAL.md): full setup, configuration, personas and game
   extensions, voice, backups, privacy, costs, and troubleshooting.
 - [HOW_TO_TALK_TO_LOREMASTER.md](HOW_TO_TALK_TO_LOREMASTER.md): a short

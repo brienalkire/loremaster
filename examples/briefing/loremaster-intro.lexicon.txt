@@ -1,0 +1,8 @@
+# Pronunciations for loremaster-intro.md (podcast-generator lexicon).
+SQLite = S Q Lite
+SQL = S Q L
+ffmpeg = F F M peg
+README = read me
+MIT = M I T
+API = A P I
+NVIDIA = en vidia
