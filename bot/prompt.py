@@ -26,14 +26,18 @@ CORE_INSTRUCTIONS_PATH = paths.CODE_DIR / "core_instructions.md"
 
 
 def get_latest_changelog_entry() -> str:
-    """Return the top (most recent) version section of CHANGELOG.md,
-    heading included - lets the bot answer "what version are you running"
-    with the real recent-changes summary, not just a bare number."""
+    """Return the top (most recent) released version section of
+    CHANGELOG.md, heading included - lets the bot answer "what version are
+    you running" with the real recent-changes summary, not just a bare
+    number. An "## [Unreleased]" section is skipped: it describes changes
+    that aren't in the running version (and is usually empty)."""
     if not CHANGELOG_PATH.exists():
         return ""
     text = CHANGELOG_PATH.read_text(encoding="utf-8")
-    sections = re.split(r"(?m)^## ", text)
-    return ("## " + sections[1]).strip() if len(sections) > 1 else ""
+    for section in re.split(r"(?m)^## ", text)[1:]:
+        if not section.lower().startswith("[unreleased]"):
+            return ("## " + section).strip()
+    return ""
 
 
 def build_system_prompt(version: str) -> str:

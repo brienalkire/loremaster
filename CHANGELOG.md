@@ -6,6 +6,18 @@ This project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [0.7.1] - 2026-11-13
+
+### Fixed
+- Asked what version it's running or what's new, the bot now describes
+  its latest release. It used to read the empty "Unreleased" section of
+  CHANGELOG.md, so it could give the version number but not the changes.
+
+### Added
+- A narrated video introduction to Loremaster, made with podcast-generator
+  and attached to the release. Its slides, script and pronunciation
+  lexicon are in `examples/briefing/`.
+
 ## [0.7.0] - 2026-11-09
 
 ### Added

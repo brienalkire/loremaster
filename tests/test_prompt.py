@@ -111,3 +111,27 @@ def test_latest_changelog_entry(tmp_path, monkeypatch):
     assert prompt.get_latest_changelog_entry() == "## [1.1] - new\n- b"
     monkeypatch.setattr(prompt, "CHANGELOG_PATH", tmp_path / "missing.md")
     assert prompt.get_latest_changelog_entry() == ""
+
+
+def test_latest_changelog_entry_skips_unreleased(tmp_path, monkeypatch):
+    changelog = tmp_path / "CHANGELOG.md"
+    monkeypatch.setattr(prompt, "CHANGELOG_PATH", changelog)
+    # Empty Unreleased section, as in the real file between releases.
+    changelog.write_text("# Changelog\n\n## [Unreleased]\n\n## [1.1] - new\n- b\n\n## [1.0]\n- a\n", encoding="utf-8")
+    assert prompt.get_latest_changelog_entry() == "## [1.1] - new\n- b"
+    # Unreleased with content: still not part of the running version.
+    changelog.write_text("# Changelog\n\n## [Unreleased]\n- wip\n\n## [1.1] - new\n- b\n", encoding="utf-8")
+    assert prompt.get_latest_changelog_entry() == "## [1.1] - new\n- b"
+    # Nothing released yet.
+    changelog.write_text("# Changelog\n\n## [Unreleased]\n- wip\n", encoding="utf-8")
+    assert prompt.get_latest_changelog_entry() == ""
+
+
+def test_real_changelog_latest_entry_matches_version():
+    """The entry the bot reports from its own CHANGELOG.md belongs to the
+    running version. Reads __version__ from main.py as text, since
+    importing main starts loading Discord and the speech model."""
+    import re
+    main_py = (prompt.CHANGELOG_PATH.parent / "bot" / "main.py").read_text(encoding="utf-8")
+    version = re.search(r'^__version__ = "([^"]+)"', main_py, re.M).group(1)
+    assert prompt.get_latest_changelog_entry().startswith(f"## [{version}]")
